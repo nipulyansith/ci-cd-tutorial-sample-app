@@ -5,15 +5,22 @@ from app.models import Menu
 
 @app.route('/')
 def home():
-	return jsonify({ "status": "ok" })
+    return jsonify({ "status": "ok" })
 
 @app.route('/menu')
 def menu():
     today = Menu.query.first()
     if today:
-        body = { "today_special": today.name }
+        body = { 
+            "today_special": today.name,
+            "status": "available",
+            "last_updated": "2024-01-20"
+        }
         status = 200
     else:
-        body = { "error": "Sorry, the service is not available today." }
+        body = { 
+            "error": "Sorry, the service is not available today.",
+            "status": "unavailable" 
+        }
         status = 404
     return jsonify(body), status
